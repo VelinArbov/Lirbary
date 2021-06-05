@@ -10,12 +10,13 @@ import { AccountService } from '../_services/account.service';
 export class HomeComponent implements OnInit {
   registerMode = false;
   users : any;
+  loggedIn = false;
  
 
-  constructor(private accountService : AccountService) { }
+  constructor(public accountService : AccountService) { }
 
   ngOnInit(): void {
-  
+  this.checkLoggedIn();
   }
 
   registerToggle() {
@@ -26,9 +27,9 @@ export class HomeComponent implements OnInit {
     this.registerMode = event;
   }
 
-  // getUser(){
-  //   this.users = this.accountService.getUsers();
+  checkLoggedIn(){
+    this.loggedIn = this.accountService.loggedIn;
+  }
 
-  // }
 
 }

@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.setCurrentUser();
-    this.getUser();
+    // this.getUser();
   
   }
 
@@ -27,10 +27,10 @@ export class AppComponent implements OnInit {
     this.accountService.setCurrentUser(user);
   }
 
-  getUser(){
-    this.users = this.accountService.getUsers();
+  // getUser(){
+  //   this.users = this.accountService.getUsers();
 
-  }
+  // }
 
   
 

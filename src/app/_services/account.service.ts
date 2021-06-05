@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
+import { Route } from '@angular/compiler/src/core';
 import { Injectable } from '@angular/core';
+import { Router, RouterLinkActive } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../_models/User';
@@ -13,41 +15,45 @@ export class AccountService {
   baseUrl = "https://localhost:5001/api/v1/";
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
-  constructor(private http: HttpClient) { }
+  loggedIn = false;
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(model: any) {
     return this.http.post(this.baseUrl + 'account/login', model).pipe(
-      map((response: User)=> {
+      map((response: User )=> {
         const user = response;
         if(user){
           localStorage.setItem('user',JSON.stringify(user));
           this.currentUserSource.next(user);
+          this.loggedIn = true;
+          console.log(this.currentUser$);
         }
       })
     )
   }
 
   register(model: any) {
-    return this.http.post(this.baseUrl + 'books/id',model).pipe(
+    console.log(model);
+    return this.http.post(this.baseUrl + 'account/register',model).pipe(
       map((user : User) => {
         if(user){
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          // localStorage.setItem('user', JSON.stringify(user));
+          // this.currentUserSource.next(user);
         }
-        return user;
+        // this.router.navigateByUrl("/");
       })
     )
     
   }
 
-  getUsers(){
-    this.http.get(this.baseUrl +'users').subscribe(response => {
-      console.log(response);
-      this.users = response;
-    },error=> {
-      console.log(error);
-    })
-  }
+  // getUsers(){
+  //   this.http.get(this.baseUrl +'users').subscribe(response => {
+  //     console.log(response);
+  //     this.users = response;
+  //   },error=> {
+  //     console.log(error);
+  //   })
+  // }
   
 
   setCurrentUser(user: User){
